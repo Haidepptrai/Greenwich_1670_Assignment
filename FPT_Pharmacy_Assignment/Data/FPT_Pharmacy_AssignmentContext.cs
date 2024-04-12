@@ -15,5 +15,12 @@ namespace FPT_Pharmacy_Assignment.Data
         }
 
         public DbSet<FPT_Pharmacy_Assignment.Models.User> User { get; set; } = default!;
+        public DbSet<FPT_Pharmacy_Assignment.Models.Product> Product { get; set; } = default!;
+
+        public DbSet<FPT_Pharmacy_Assignment.Models.Order> Order { get; set; } = default!;
+
+        public DbSet<FPT_Pharmacy_Assignment.Models.OrderDetail> OrderDetail { get; set; } = default!;
+
+        public DbSet<FPT_Pharmacy_Assignment.Models.Transaction> Transaction { get; set; } = default!;
     }
 }
