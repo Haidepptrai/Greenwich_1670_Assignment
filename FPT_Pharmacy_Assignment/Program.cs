@@ -11,9 +11,12 @@ namespace FPT_Pharmacy_Assignment
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddDbContext<FPT_Pharmacy_AssignmentContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("FPT_Pharmacy_AssignmentContext") ?? throw new InvalidOperationException("Connection string 'FPT_Pharmacy_AssignmentContext' not found.")));
+
             // Register ApplicationDBContext
             builder.Services.AddDbContext<ApplicationDBContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.")));
 
             // Configure Identity
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -38,7 +41,7 @@ namespace FPT_Pharmacy_Assignment
             app.UseRouting();
 
             app.UseAuthorization();
-            
+
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
