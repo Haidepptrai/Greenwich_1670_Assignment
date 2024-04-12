@@ -3,6 +3,10 @@
     "mssql1": {
       "type": "mssql",
       "connectionId": "ConnectionStrings:FPT_Pharmacy_AssignmentContext"
+    },
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:ApplicationDBContextConnection"
     }
   }
 }

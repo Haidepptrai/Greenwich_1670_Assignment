@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using FPT_Pharmacy_Assignment.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace FPT_Pharmacy_Assignment.Data
 {
@@ -15,6 +16,7 @@ namespace FPT_Pharmacy_Assignment.Data
         }
 
         public DbSet<FPT_Pharmacy_Assignment.Models.User> User { get; set; } = default!;
+
         public DbSet<FPT_Pharmacy_Assignment.Models.Product> Product { get; set; } = default!;
 
         public DbSet<FPT_Pharmacy_Assignment.Models.Order> Order { get; set; } = default!;
