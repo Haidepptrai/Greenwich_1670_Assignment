@@ -1,4 +1,4 @@
-﻿using FPT_Pharmacy_Assignment.Areas.Admin.Models;
+﻿    using FPT_Pharmacy_Assignment.Areas.Admin.Models;
 using System.ComponentModel.DataAnnotations;
 
 public class Manufacturer
@@ -13,8 +13,8 @@ public class Manufacturer
     public string? Address { get; set; }
 
     [Required(ErrorMessage = "Phone number is required.")]
-    [Phone(ErrorMessage = "Invalid phone number.")]
-    public int? Phone { get; set; }
+    [RegularExpression(@"^(?:\+\d{1,3})?\d{9,12}$", ErrorMessage = "Invalid phone number.")]
+    public string? Phone { get; set; }
 
     public virtual ICollection<Product>? Products { get; set; }
 }
