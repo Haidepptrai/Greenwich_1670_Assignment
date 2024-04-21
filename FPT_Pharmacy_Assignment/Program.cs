@@ -1,5 +1,6 @@
 using FPT_Pharmacy_Assignment.Areas.Identity.Data;
 using FPT_Pharmacy_Assignment.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 namespace FPT_Pharmacy_Assignment
 {
@@ -12,12 +13,21 @@ namespace FPT_Pharmacy_Assignment
 
             builder.Services.AddDbContext<FPT_Pharmacy_AssignmentContext>(options => options.UseSqlServer(connectionString));
 
-            builder.Services.AddDefaultIdentity<CustomUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<FPT_Pharmacy_AssignmentContext>();
+            builder.Services.AddDefaultIdentity<CustomUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<FPT_Pharmacy_AssignmentContext>();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+
+                SeedData.Initialize(services).Wait();
+            }
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -33,13 +43,12 @@ namespace FPT_Pharmacy_Assignment
             app.UseRouting();
 
             app.UseAuthorization();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
+
+            app.MapControllerRoute(
                   name: "areas",
                   pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}"
                 );
-            });
+
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
