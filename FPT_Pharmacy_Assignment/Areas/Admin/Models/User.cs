@@ -9,7 +9,7 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Models
 
         [Required]
         [StringLength(100)]
-        [RegularExpression(@"^[a-zA-Z\s]*$", ErrorMessage = "Product name should not contain numbers or special characters.")]
+        [RegularExpression(@"^[a-zA-Z\s]*$", ErrorMessage = "User name should not contain numbers or special characters.")]
         public string Username { get; set; }
 
         [Required]
