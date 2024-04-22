@@ -1,3 +1,4 @@
+using FPT_Pharmacy_Assignment.Areas.Admin.Models;
 using FPT_Pharmacy_Assignment.Areas.Identity.Data;
 using FPT_Pharmacy_Assignment.Data;
 using Microsoft.AspNetCore.Identity;
