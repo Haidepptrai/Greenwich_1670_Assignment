@@ -4,6 +4,7 @@ using FPT_Pharmacy_Assignment.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FPT_Pharmacy_Assignment.Migrations
 {
     [DbContext(typeof(FPT_Pharmacy_AssignmentContext))]
-    partial class FPT_Pharmacy_AssignmentContextModelSnapshot : ModelSnapshot
+    [Migration("20240421135140_test")]
+    partial class test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,10 +94,6 @@ namespace FPT_Pharmacy_Assignment.Migrations
                     b.Property<string>("Description")
                         .HasMaxLength(650)
                         .HasColumnType("nvarchar(650)");
-
-                    b.Property<string>("ImageFile")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ManufacturerId")
                         .HasColumnType("int");
@@ -217,7 +216,6 @@ namespace FPT_Pharmacy_Assignment.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -281,9 +279,9 @@ namespace FPT_Pharmacy_Assignment.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Phone")
+                    b.Property<int?>("Phone")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("int");
 
                     b.HasKey("ManufacturerId");
 

@@ -6,7 +6,7 @@
 	<title>@ViewData["Title"]</title>
 	<link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
     @RenderSection("Scripts", required: false)
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 	<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -15,7 +15,7 @@
             <div>
                 <div class="brand-logo d-flex align-items-center justify-content-between">
                     <a asp-controller="Dashboard" asp-action="Index" class="text-nowrap logo-img">
-                        <img src="~/images/logos/dark-logo.svg" width="180" alt="" />
+                        <img src="~/images/logos/download.png" width="180" alt="" />
                     </a>
                     <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                         <i class="ti ti-x fs-8"></i>
@@ -66,9 +66,6 @@
                             </a>
                             <ul aria-expanded="false" class="collapse first-level">
                                 <li class="sidebar-item">
-                                    <a asp-controller="Users" asp-action="Create" class="sidebar-link">Add User</a>
-                                </li>
-                                <li class="sidebar-item">
                                     <a asp-controller="Users" asp-action="Index" class="sidebar-link">View Users</a>
                                 </li>
                             </ul>
@@ -110,7 +107,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="javascript:void(0);" aria-expanded="false">
                                 <span>
-                                    <i class="ti ti-panel"></i>
+                                    <i class="ti ti-user"></i>
                                 </span>
                                 <span class="hide-menu">Manufacturers</span>
                                 <span class="menu-arrow"></span> <!-- Bootstrap dropdown indicator -->
