@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FPT_Pharmacy_Assignment.Areas.Admin.Models;
 using FPT_Pharmacy_Assignment.Data;
+using Microsoft.Extensions.Hosting;
 
 namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
 {
@@ -14,10 +15,12 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
     public class ProductsController : Controller
     {
         private readonly FPT_Pharmacy_AssignmentContext _context;
+        private readonly IWebHostEnvironment _environment;
 
-        public ProductsController(FPT_Pharmacy_AssignmentContext context)
+        public ProductsController(FPT_Pharmacy_AssignmentContext context, IWebHostEnvironment environment)
         {
             _context = context;
+            _environment = environment;
         }
 
         // GET: Admin/Products
@@ -56,16 +59,27 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductId,ManufacturerId,Name,Description,Price,StockLevel")] Product product)
+        public async Task<IActionResult> Create([Bind("ProductId,ManufacturerId,Name,Description,Price,StockLevel")] Product product, IFormFile imageFile)
         {
-            if (ModelState.IsValid)
+            if (imageFile != null && imageFile.Length > 0)
             {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads/products");
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName); // Generate a unique file name
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(fileStream);
+                }
+
+                product.ImageFile = fileName;
             }
-            return View(product);
+
+            _context.Add(product);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
+
 
         // GET: Admin/Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -80,43 +94,90 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+
+            var manufacturer = await _context.Manufacturer.FindAsync(product.ManufacturerId);
+            if (manufacturer == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["ManufacturerName"] = manufacturer.Name;
             return View(product);
         }
+
 
         // POST: Admin/Products/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductId,ManufacturerId,Name,Description,Price,StockLevel")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("ProductId,ManufacturerId,Name,Description,Price,StockLevel")] Product product, IFormFile imageFile)
         {
             if (id != product.ProductId)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
+                // Load the existing product entity from the context
+                var existingProduct = await _context.Product.FindAsync(id);
+
+                if (existingProduct == null)
                 {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+
+                // If a new image file is uploaded, handle it
+                if (imageFile != null && imageFile.Length > 0)
                 {
-                    if (!ProductExists(product.ProductId))
+                    var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads/products");
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName); // Generate a unique file name
+                    var filePath = Path.Combine(uploadsFolder, fileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
-                        return NotFound();
+                        await imageFile.CopyToAsync(fileStream);
                     }
-                    else
+
+                    // Delete the previous image file if necessary
+                    if (!string.IsNullOrEmpty(existingProduct.ImageFile))
                     {
-                        throw;
+                        var previousFilePath = Path.Combine(_environment.WebRootPath, "uploads/products", existingProduct.ImageFile);
+                        if (System.IO.File.Exists(previousFilePath))
+                        {
+                            System.IO.File.Delete(previousFilePath);
+                        }
                     }
+
+                    // Update the product's image file
+                    existingProduct.ImageFile = fileName;
                 }
+
+                // Update other properties
+                existingProduct.Name = product.Name;
+                existingProduct.Description = product.Description;
+                existingProduct.Price = product.Price;
+                existingProduct.StockLevel = product.StockLevel;
+
+                // Save changes
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(product);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProductExists(product.ProductId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
+
 
         // GET: Admin/Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
