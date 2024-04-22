@@ -7,7 +7,7 @@ namespace FPT_Pharmacy_Assignment.Areas.Identity.Data;
 public class CustomUser : IdentityUser
 {
     [PersonalData]
-    [Required(ErrorMessage = "Full name is required.")]
+    //[Required(ErrorMessage = "Full name is required.")]
     public string? FullName { get; set; }
 
     [PersonalData]
