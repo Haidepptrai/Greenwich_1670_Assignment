@@ -7,72 +7,96 @@
 <!-- Include Bootstrap CSS -->
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-<h1 class="mt-4">Product Listing</h1>
-
-<div class="row">
-    <div class="col-md-3">
-        <div class="card mb-4">
-            <h5 class="card-header">Filters</h5>
-            <div class="card-body">
-                <form id="filterForm">
-                    <input type="text" id="searchInput" class="form-control mb-3" placeholder="Search by name...">
-
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="price1" value="price1">
-                        <label class="form-check-label" for="price1">
-                            $0 - $50
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="price2" value="price2">
-                        <label class="form-check-label" for="price2">
-                            $50 - $200
-                        </label>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-9">
-        <div class="row" id="productList">
-            @foreach (var item in Model)
-            {
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="/uploads/products/@item.ImageFile" class="card-img-top" alt="@item.Name">
-                        <div class="card-body">
-                            <h5 class="card-title">@item.Name</h5>
-                            <p class="card-text">Price: @item.Price $</p>
-                            <p class="card-text">Stock Level: @item.StockLevel</p>
-                            <a href="@Url.Action("Details", new { id = item.ProductId })" class="btn btn-primary">Details</a>
-                        </div>
+<div class="container">
+    <div class="row">
+        <!-- Filters Section -->
+        <div class="col-md-3">
+            <div class="section properties" style="margin-top: 0">
+                <div class="properties-filter">
+                    <h5 class="card-header">Filters</h5>
+                    <div class="card-body">
+                        <form id="filterForm">
+                            <input type="text" id="searchInput" class="form-control mb-3" placeholder="Search by name...">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="price1" value="price1">
+                                <label class="form-check-label" for="price1">
+                                    $0 - $50
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="price2" value="price2">
+                                <label class="form-check-label" for="price2">
+                                    $50 - $200
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="price3" value="price3">
+                                <label class="form-check-label" for="price3">
+                                    $200 - $500
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="price4" value="price4">
+                                <label class="form-check-label" for="price4">
+                                    $500 - $1000
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="price5" value="price5">
+                                <label class="form-check-label" for="price5">
+                                    $1000 - $2000
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="price6" value="price6">
+                                <label class="form-check-label" for="price6">
+                                    $2000 - $5000
+                                </label>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            }
+            </div>
         </div>
-
-        <!-- Pagination -->
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
-                    <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1, pageSize = ViewBag.PageSize })" tabindex="-1" aria-disabled="true">Previous</a>
-                </li>
-                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+        <!-- Products Section -->
+        <div class="col-md-9">
+            <div class="row" id="productList">
+                @foreach (var item in Model)
                 {
-                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")"><a class="page-link" href="@Url.Action("Index", new { page = i, pageSize = ViewBag.PageSize })">@i</a></li>
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-img-container d-flex justify-content-center align-items-center" style="height: 300px;">
+                                <img src="/uploads/products/@item.ImageFile" class="card-img-top" alt="@item.Name">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">@item.Name</h5>
+                                <p class="card-text">Price: @item.Price $</p>
+                                <p class="card-text">Quantity: @item.StockLevel</p>
+                                <a href="@Url.Action("Details", new { id = item.ProductId })" class="btn btn-primary">Details</a>
+                            </div>
+                        </div>
+                    </div>
                 }
-                <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
-                    <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1, pageSize = ViewBag.PageSize })">Next</a>
-                </li>
-            </ul>
-        </nav>
+            </div>
+
+            <!-- Pagination -->
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1, pageSize = ViewBag.PageSize })" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")"><a class="page-link" href="@Url.Action("Index", new { page = i, pageSize = ViewBag.PageSize })">@i</a></li>
+                    }
+                    <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1, pageSize = ViewBag.PageSize })">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
 </div>
-
-<!-- Include Bootstrap JS -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-<!-- Include your custom JS file -->
 @section scripts {
     <script src="~/js/site.js"></script>
 }

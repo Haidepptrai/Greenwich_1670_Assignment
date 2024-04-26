@@ -28,7 +28,7 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
         {
             return View(await _context.Product.ToListAsync());
         }
-
+        
         // GET: Admin/Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -77,7 +77,7 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
 
             _context.Add(product);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { area = "Admin" });
         }
 
 
@@ -163,7 +163,7 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
                 // Save changes
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { area = "Admin" });
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -177,7 +177,6 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
                 }
             }
         }
-
 
         // GET: Admin/Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -209,7 +208,7 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { area = "Admin" });
         }
 
         private bool ProductExists(int id)
