@@ -30,21 +30,22 @@
                 <div class="col-12">
                     <nav class="main-nav">
                         <!-- ***** Logo Start ***** -->
-                        <a href="index.html" class="logo">
-                            <h1>Villa</h1>
+                        <a asp-controller="Home" asp-action="Index" class="logo">
+                            <img src="~/images/logos/download.png" alt="Alternate Text" />
                         </a>
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav">
-                            <li><a asp-controller="Home" asp-action="Index" class="active">Home</a></li>
+                            <li><a asp-controller="Home" asp-action="Index">Home</a></li>
                             <li><a asp-area="" asp-controller="Products" asp-action="Index">Products</a></li>
                             <li><a asp-action="Contact">Contact Us</a></li>
-                            <li><a href="#"><i class="fa fa-calendar"></i> Schedule a visit</a></li>
+                            <li><a asp-controller="Home" asp-action="CartPage"><i class="fa fa-shopping-cart"></i> Cart</a></li>
                         </ul>
                         <a class='menu-trigger'>
                             <span>Menu</span>
                         </a>
                         <!-- ***** Menu End ***** -->
+                        @Html.Partial("_LoginPartial")
                     </nav>
                 </div>
             </div>

@@ -25,17 +25,25 @@ namespace FPT_Pharmacy_Assignment.Controllers
         [HttpPost]
         public IActionResult FilterProducts(List<string> prices)
         {
-            var filteredProducts = _context.Product.Where(p =>
-                prices.Contains("price1") && p.Price >= 0 && p.Price <= 50 ||
-                prices.Contains("price2") && p.Price > 50 && p.Price <= 200 ||
-                prices.Contains("price3") && p.Price >= 200 && p.Price <= 500 ||
-                prices.Contains("price4") && p.Price > 500 && p.Price <= 1000 ||
-                prices.Contains("price5") && p.Price >= 1000 && p.Price <= 2000 ||
-                prices.Contains("price6") && p.Price > 2000 && p.Price <= 5000
-            ).ToList();
+            var filteredProducts = _context.Product.AsQueryable();
 
-            return PartialView("Index", filteredProducts);
+            if (prices != null && prices.Any())
+            {
+                filteredProducts = filteredProducts.Where(p =>
+                    (prices.Contains("price1") && p.Price >= 0 && p.Price <= 50) ||
+                    (prices.Contains("price2") && p.Price > 50 && p.Price <= 200) ||
+                    (prices.Contains("price3") && p.Price >= 200 && p.Price <= 500) ||
+                    (prices.Contains("price4") && p.Price > 500 && p.Price <= 1000) ||
+                    (prices.Contains("price5") && p.Price >= 1000 && p.Price <= 2000) ||
+                    (prices.Contains("price6") && p.Price > 2000 && p.Price <= 5000)
+                );
+            }
+
+            var filteredProductList = filteredProducts.ToList();
+
+            return View("Products", filteredProductList);
         }
+
         [HttpGet("Products")]
         public IActionResult Index(int page = 1, int pageSize = 9)
         {
