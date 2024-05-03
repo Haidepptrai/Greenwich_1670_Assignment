@@ -21,7 +21,13 @@
                     </select>
                     <span asp-validation-for="ManufacturerId" class="text-danger"></span>
                 </div>
-
+                <div class="form-group">
+                    <label asp-for="CategoryId" class="control-label">Category</label>
+                    <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId">
+                        <option value="">-- Select Category --</option>
+                    </select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
                 <div class="form-group">
                     <label asp-for="ImageFile" class="control-label">Image</label>
                     <input asp-for="ImageFile" type="file" class="form-control" />
