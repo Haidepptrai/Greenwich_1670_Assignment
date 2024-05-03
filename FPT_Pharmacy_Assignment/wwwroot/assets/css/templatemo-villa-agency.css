@@ -440,28 +440,39 @@ Header Style
 }
 
 .header-area .main-nav .nav li {
+  display: flex;
   padding-left: 10px;
   padding-right: 10px;
   height: 100px;
   line-height: 100px;
 }
 
+.nav li {
+    display: flex !important;
+    -webkit-align-items: inherit !important;
+    align-items: inherit !important;
+}
+
+.nav {
+    justify-content: center !important;
+}
+
 .header-area .main-nav .nav li a {
-  display: block;
-  padding-left: 20px;
-  padding-right: 20px;
-  font-weight: 500;
-  font-size: 15px;
-  height: 40px;
-  line-height: 40px;
-  text-transform: capitalize;
-  color: #1e1e1e;
-  -webkit-transition: all 0.4s ease 0s;
-  -moz-transition: all 0.4s ease 0s;
-  -o-transition: all 0.4s ease 0s;
-  transition: all 0.4s ease 0s;
-  border: transparent;
-  letter-spacing: .25px;
+    display: flex !important;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-weight: 500;
+    font-size: 15px;
+    height: 40px;
+    line-height: 40px;
+    text-transform: capitalize;
+    color: #1e1e1e;
+    -webkit-transition: all 0.4s ease 0s;
+    -moz-transition: all 0.4s ease 0s;
+    -o-transition: all 0.4s ease 0s;
+    transition: all 0.4s ease 0s;
+    border: transparent;
+    letter-spacing: .25px;
 }
 
 .header-area .main-nav .nav li:last-child a {
