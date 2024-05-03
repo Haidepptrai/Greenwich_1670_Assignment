@@ -20,8 +20,10 @@ namespace FPT_Pharmacy_Assignment.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Product.ToListAsync());
-        }
+			var products = _context.Product.Include(p => p.Category);
+			var categories = _context.Category;
+			return View(new ProductViewModel(products, categories));
+		}
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 
         public IActionResult Error()

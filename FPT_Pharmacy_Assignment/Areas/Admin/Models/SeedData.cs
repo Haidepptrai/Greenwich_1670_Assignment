@@ -66,7 +66,7 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Models
                     {
                         ManufacturerId = 1,
                         CategoryId = 1,
-                        ImageFile = "a3bd15b9-e0da-4ad7-b38f-bdb9ccb805ed.webp",
+                        ImageFile = "72cbf20f-3e2a-4510-aa7d-34a4659f7f6c.webp",
                         Name = "Viên nhai Borne Mineral New Nordic hỗ trợ phát triển xương, giúp tăng chiều cao, tăng đề kháng (120 viên)",
                         Description = "Borne Mineral hỗ trợ sự phát triển của xương giúp tăng trưởng chiều cao, giảm nguy cơ còi xương thấp bé, phòng ngừa thiếu canxi ở trẻ em và hỗ trợ tăng cường sức đề kháng.",
                         Price = 10.99m,
@@ -76,7 +76,7 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Models
                     {
                         ManufacturerId = 1,
                         CategoryId = 2,
-                        ImageFile = "df961fc2-958a-4a9b-8d6e-d9206a87c24d.webp",
+                        ImageFile = "880d0dc5-8b82-4bf4-97dc-f113b3f54637",
                         Name = "Kem chống nắng giảm nhờn Eucerin Sun Dry Touch Oil Control Face SPF50+ PA+++ (50ml)",
                         Description = "Kem chống nắng Eucerin Sun Dry Touch Oil Control Face SPF50+ PA+++ với màng lọc tia UVA, UVB tối đa cùng SPF50+ giúp bảo vệ da tối ưu ngăn ngừa các tác hại của ánh nắng mặt trời. Sản phẩm đặc biệt phù hợp để kiểm soát nhờn dành cho da nhờn mụn. Không bổ sung mùi và parabens.",
                         Price = 20.99m,
@@ -86,7 +86,7 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Models
                     {
                         ManufacturerId = 2,
                         CategoryId = 3,
-                        ImageFile = "df6c1bc2-4d29-4757-9049-d9dff53e5f86.webp",
+                        ImageFile = "94e1c906-e08c-46f1-99a2-99f08d03cf7e.webp",
                         Name = "Siro WellKid Multi-Vitamin Liquid bổ sung vitamin, khoáng chất cho trẻ em (150ml)",
                         Description = "Wellkid Multi-Vitamin Liquid bổ sung vitamin, khoáng chất cho trẻ em, giúp tăng cường sức khỏe, nâng cao sức đề kháng.",
                         Price = 30.99m,

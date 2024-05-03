@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FPT_Pharmacy_Assignment.Areas.Admin.Models.Product>
+﻿@model FPT_Pharmacy_Assignment.Models.ProductViewModel
 
 @{
 	ViewData["Title"] = "Home Page";
@@ -105,14 +105,14 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-lg-4 col-md-6">
-				<div class="item">
-					@if (Model != null)
-					{
-						@foreach (var item in Model)
+			@if (Model.Products != null)
+			{
+				<div class="col-lg-4 col-md-6">
+					<div class="item">
+						@foreach (var item in Model.Products)
 						{
 							<img src="/uploads/products/@item.ImageFile" alt="">
-							//<span class="category">Luxury Villa</span>
+							<span class="category">@item.Category.Name</span>
 							<h6>@item.Price $</h6>
 							<div class="card-body">
 								<h5 class="card-title">@item.Name</h5>
@@ -122,13 +122,15 @@
 								<a href="@Url.Action("Details","Products", new { id = item.ProductId })">Schedule a visit</a>
 							</div>
 						}
-					}
-					else
-					{
-						<p>No data available</p>
-					}
+
+					</div>
 				</div>
-			</div>
+			}
+			else
+			{
+				<p>No data available</p>
+			}
+
 		</div>
 	</div>
 </div>

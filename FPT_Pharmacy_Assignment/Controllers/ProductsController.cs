@@ -1,5 +1,6 @@
 ﻿using FPT_Pharmacy_Assignment.Data;
 using FPT_Pharmacy_Assignment.Extensions;
+using FPT_Pharmacy_Assignment.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,8 +20,9 @@ namespace FPT_Pharmacy_Assignment.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Product.ToListAsync());
-        }
+			var products = _context.Product;
+			return View(new ProductViewModel(products));
+		}
 
         // POST: Admin/Products/FilterProducts
         [HttpPost]
