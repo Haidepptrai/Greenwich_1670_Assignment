@@ -24,16 +24,6 @@ namespace FPT_Pharmacy_Assignment.Controllers
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 
-        [HttpGet]
-        public async Task<IActionResult> Contact()
-        {
-            return View();
-        }
-        [HttpGet]
-        public async Task<IActionResult> CartPage()
-        {
-            return View();
-        }
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

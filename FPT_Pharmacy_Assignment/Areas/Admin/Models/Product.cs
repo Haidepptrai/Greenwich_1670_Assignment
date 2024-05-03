@@ -17,6 +17,8 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Models
         [Required(ErrorMessage = "Product name is required.")]
         public string Name { get; set; }
 
+        public Manufacturer Manufacturer { get; set; }  // Navigation property
+
         [StringLength(650)]
         public string? Description { get; set; }
 

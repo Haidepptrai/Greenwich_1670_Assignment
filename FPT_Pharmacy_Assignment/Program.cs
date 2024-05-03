@@ -11,6 +11,8 @@ namespace FPT_Pharmacy_Assignment
         {
             var builder = WebApplication.CreateBuilder(args);
             var connectionString = builder.Configuration.GetConnectionString("FPT_Pharmacy_AssignmentContextConnection") ?? throw new InvalidOperationException("Connection string 'FPT_Pharmacy_AssignmentContextConnection' not found.");
+            // Add services to the container.
+            ConfigureServices(builder.Services, builder.Configuration);
 
             builder.Services.AddDbContext<FPT_Pharmacy_AssignmentContext>(options => options.UseSqlServer(connectionString));
 
@@ -41,6 +43,8 @@ namespace FPT_Pharmacy_Assignment
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseSession();
+
             app.UseRouting();
 
             app.UseAuthorization();
@@ -56,6 +60,19 @@ namespace FPT_Pharmacy_Assignment
 
             app.MapRazorPages();
             app.Run();
+        }
+
+        public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+            services.AddControllersWithViews();
         }
     }
 }
