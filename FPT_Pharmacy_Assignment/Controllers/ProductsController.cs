@@ -1,4 +1,5 @@
 ﻿using FPT_Pharmacy_Assignment.Data;
+using FPT_Pharmacy_Assignment.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -76,13 +77,39 @@ namespace FPT_Pharmacy_Assignment.Controllers
             }
 
             var product = await _context.Product
+                .Include(p => p.Manufacturer)
                 .FirstOrDefaultAsync(m => m.ProductId == id);
+
             if (product == null)
             {
                 return NotFound();
             }
 
             return View(product);
+        }
+        [HttpPost]
+        public IActionResult AddToCart([FromBody] CartItem model)
+        {
+            var cart = HttpContext.Session.Get<List<CartItem>>("Cart") ?? new List<CartItem>();
+            var cartItem = cart.Find(item => item.ProductId == model.ProductId);
+            if (cartItem != null)
+            {
+                cartItem.Quantity += model.Quantity;
+                HttpContext.Session.Set("Cart", cart);
+                return Json(new { success = true, message = "Your product quantity has been updated." });
+            }
+            else
+            {
+                cart.Add(new CartItem
+                {
+                    ProductId = model.ProductId,
+                    ProductName = model.ProductName,
+                    Price = model.Price,
+                    Quantity = model.Quantity
+                });
+                HttpContext.Session.Set("Cart", cart);
+                return Json(new { success = true, message = "Product added to cart successfully!" });
+            }
         }
     }
 }
