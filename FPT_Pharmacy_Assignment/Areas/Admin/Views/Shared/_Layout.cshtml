@@ -42,6 +42,23 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="javascript:void(0);" aria-expanded="false">
                                 <span>
+                                    <i class="ti ti-category"></i>
+                                </span>
+                                <span class="hide-menu">Categories</span>
+                                <span class="menu-arrow"></span> <!-- Bootstrap dropdown indicator -->
+                            </a>
+                            <ul aria-expanded="false" class="collapse first-level">
+                                <li class="sidebar-item">
+                                    <a asp-area="Admin" asp-controller="Categories" asp-action="Create" class="sidebar-link">Add Category</a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a asp-area="Admin" asp-controller="Categories" asp-action="Index" class="sidebar-link">View Category</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="javascript:void(0);" aria-expanded="false">
+                                <span>
                                     <i class="ti ti-package"></i>
                                 </span>
                                 <span class="hide-menu">Products</span>

@@ -10,7 +10,8 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Models
 
         [ForeignKey("Manufacturer")]
         public int ManufacturerId { get; set; }
-
+        [ForeignKey("Category")]
+        public int CategoryId { get; set; }
         [Display(Name = "Image")]
         public string ImageFile { get; set; }
 
@@ -29,5 +30,6 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Models
         [Required(ErrorMessage = "Stock level is required.")]
         [Range(0, int.MaxValue, ErrorMessage = "Stock level must be a positive number.")]
         public int StockLevel { get; set; }
+        public Category? Category { get; set; }
     }
 }

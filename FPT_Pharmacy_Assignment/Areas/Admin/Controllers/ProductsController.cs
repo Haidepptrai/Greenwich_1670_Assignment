@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FPT_Pharmacy_Assignment.Areas.Admin.Models;
 using FPT_Pharmacy_Assignment.Data;
 using Microsoft.Extensions.Hosting;
+using FPT_Pharmacy_Assignment.Migrations;
 
 namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
 {
@@ -26,9 +27,10 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
         // GET: Admin/Products
         public async Task<IActionResult> Index()
         {
+            var applicationDbContext = _context.Product.Include(p => p.Category);
             return View(await _context.Product.ToListAsync());
         }
-        
+
         // GET: Admin/Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -38,12 +40,12 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
             }
 
             var product = await _context.Product
+                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.ProductId == id);
             if (product == null)
             {
                 return NotFound();
             }
-
             return View(product);
         }
 
@@ -51,6 +53,7 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
         public IActionResult Create()
         {
             ViewBag.ManufacturerId = new SelectList(_context.Manufacturer, "ManufacturerId", "Name");
+            ViewBag.CategoryId = new SelectList(_context.Category, "CategoryId", "Name");
             return View();
         }
 
@@ -59,7 +62,7 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductId,ManufacturerId,Name,Description,Price,StockLevel")] Product product, IFormFile imageFile)
+        public async Task<IActionResult> Create([Bind("ProductId,ManufacturerId,CategoryId,Name,Description,Price,StockLevel")] Product product, IFormFile imageFile)
         {
             if (imageFile != null && imageFile.Length > 0)
             {
@@ -102,6 +105,8 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
             }
 
             ViewData["ManufacturerName"] = manufacturer.Name;
+
+            ViewBag.CategoryId = new SelectList(_context.Category, "CategoryId", "Name", product.CategoryId);
             return View(product);
         }
 
@@ -111,7 +116,7 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductId,ManufacturerId,Name,Description,Price,StockLevel")] Product product, IFormFile imageFile)
+        public async Task<IActionResult> Edit(int id, [Bind("ProductId,ManufacturerId,CategoryId,Name,Description,Price,StockLevel")] Product product, IFormFile imageFile)
         {
             if (id != product.ProductId)
             {
@@ -154,6 +159,8 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
                     existingProduct.ImageFile = fileName;
                 }
 
+                ViewBag.CategoryId = new SelectList(_context.Category, "CategoryId", "Name", product.CategoryId);
+
                 // Update other properties
                 existingProduct.Name = product.Name;
                 existingProduct.Description = product.Description;
@@ -187,6 +194,7 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
             }
 
             var product = await _context.Product
+                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.ProductId == id);
             if (product == null)
             {

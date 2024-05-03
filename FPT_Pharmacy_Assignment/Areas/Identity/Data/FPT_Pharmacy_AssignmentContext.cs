@@ -27,5 +27,7 @@ public class FPT_Pharmacy_AssignmentContext : IdentityDbContext<CustomUser>
     public DbSet<FPT_Pharmacy_Assignment.Areas.Admin.Models.Product> Product { get; set; } = default!;
 
     public DbSet<FPT_Pharmacy_Assignment.Areas.Admin.Models.Transaction> Transaction { get; set; } = default!;
+
+public DbSet<Category> Category { get; set; } = default!;
 }
 
