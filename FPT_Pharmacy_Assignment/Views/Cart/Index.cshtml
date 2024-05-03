@@ -21,6 +21,7 @@ else
                 <th>Price</th>
                 <th>Quantity</th>
                 <th>Total Price</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -31,6 +32,9 @@ else
                     <td>@item.Price.ToString("C")</td>
                     <td>@item.Quantity</td>
                     <td>@(item.Price * item.Quantity)</td>
+                    <td>
+                        <a class="btn btn-danger" href="@Url.Action("RemoveItem", "Cart", new { id = item.ProductId })">Remove Item</a>
+                    </td>
                 </tr>
             }
         </tbody>

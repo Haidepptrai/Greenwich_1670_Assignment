@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using FPT_Pharmacy_Assignment.Areas.Admin.Models;
+using FPT_Pharmacy_Assignment.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using FPT_Pharmacy_Assignment.Areas.Admin.Models;
-using FPT_Pharmacy_Assignment.Data;
-using Microsoft.Extensions.Hosting;
-using FPT_Pharmacy_Assignment.Migrations;
 
 namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
 {

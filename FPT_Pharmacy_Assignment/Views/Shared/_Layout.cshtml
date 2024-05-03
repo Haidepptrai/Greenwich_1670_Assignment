@@ -39,14 +39,14 @@
     <!-- ***** Header Area Start ***** -->
     <header class="header-area header-sticky">
         <div class="">
-            <nav class="main-nav">
+            <nav class="main-nav" style="align-items: center; width: 90%; margin:auto">
                 <!-- ***** Logo Start ***** -->
                 <a asp-controller="Home" asp-action="Index" class="logo" style="height: fit-content;">
                     <img src="~/images/logos/download.png" alt="Alternate Text" width="100" height="100" />
                 </a>
                 <!-- ***** Logo End ***** -->
                 <!-- ***** Menu Start ***** -->
-                <ul class="nav">
+                <ul style="display: flex; flex-direction: row; gap: 2rem; flex-basis: 100%; justify-content: center; height: fit-content; margin: auto; margin-left: -5rem">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Products" asp-action="Index">Products</a></li>
                     <li><a asp-area="" asp-controller="Contact" asp-action="Index">Contact Us</a></li>
@@ -62,7 +62,7 @@
     </header>
     <!-- ***** Header Area End ***** -->
     <div>
-        <main>
+        <main style="padding: 0 !important; margin-bottom: 150px;">
             @RenderBody()
         </main>
     </div>

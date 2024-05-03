@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FPT_Pharmacy_Assignment.Migrations
 {
     [DbContext(typeof(FPT_Pharmacy_AssignmentContext))]
-    [Migration("20240502160143_AddManufacturerForProductModel")]
-    partial class AddManufacturerForProductModel
+    [Migration("20240503094213_UpdateManufacPhone")]
+    partial class UpdateManufacPhone
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,23 @@ namespace FPT_Pharmacy_Assignment.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Category", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Category");
+                });
 
             modelBuilder.Entity("FPT_Pharmacy_Assignment.Areas.Admin.Models.Order", b =>
                 {
@@ -91,6 +108,9 @@ namespace FPT_Pharmacy_Assignment.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .HasMaxLength(650)
                         .HasColumnType("nvarchar(650)");
@@ -113,6 +133,8 @@ namespace FPT_Pharmacy_Assignment.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ProductId");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("ManufacturerId");
 
@@ -459,11 +481,19 @@ namespace FPT_Pharmacy_Assignment.Migrations
 
             modelBuilder.Entity("FPT_Pharmacy_Assignment.Areas.Admin.Models.Product", b =>
                 {
+                    b.HasOne("Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Manufacturer", "Manufacturer")
                         .WithMany("Products")
                         .HasForeignKey("ManufacturerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Category");
 
                     b.Navigation("Manufacturer");
                 });
@@ -528,6 +558,11 @@ namespace FPT_Pharmacy_Assignment.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Category", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("FPT_Pharmacy_Assignment.Areas.Admin.Models.Order", b =>
