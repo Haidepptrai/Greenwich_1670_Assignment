@@ -106,11 +106,11 @@
 		</div>
 		<div class="row">
 			@if (Model.Products != null)
-			{
-				<div class="col-lg-4 col-md-6">
-					<div class="item">
-						@foreach (var item in Model.Products)
-						{
+			{						@foreach (var item in Model.Products)
+				{
+					<div class="col-lg-4 col-md-6">
+						<div class="item">
+
 							<img src="/uploads/products/@item.ImageFile" alt="">
 							<span class="category">@item.Category.Name</span>
 							<h6>@item.Price $</h6>
@@ -121,10 +121,10 @@
 							<div class="main-button">
 								<a href="@Url.Action("Details","Products", new { id = item.ProductId })">Schedule a visit</a>
 							</div>
-						}
 
+						</div>
 					</div>
-				</div>
+				}
 			}
 			else
 			{
