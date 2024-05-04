@@ -76,7 +76,7 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Models
                     {
                         ManufacturerId = 1,
                         CategoryId = 2,
-                        ImageFile = "880d0dc5-8b82-4bf4-97dc-f113b3f54637",
+                        ImageFile = "880d0dc5-8b82-4bf4-97dc-f113b3f54637.webp",
                         Name = "Kem chống nắng giảm nhờn Eucerin Sun Dry Touch Oil Control Face SPF50+ PA+++ (50ml)",
                         Description = "Kem chống nắng Eucerin Sun Dry Touch Oil Control Face SPF50+ PA+++ với màng lọc tia UVA, UVB tối đa cùng SPF50+ giúp bảo vệ da tối ưu ngăn ngừa các tác hại của ánh nắng mặt trời. Sản phẩm đặc biệt phù hợp để kiểm soát nhờn dành cho da nhờn mụn. Không bổ sung mùi và parabens.",
                         Price = 20.99m,
