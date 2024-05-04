@@ -4,6 +4,7 @@ using FPT_Pharmacy_Assignment.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FPT_Pharmacy_Assignment.Migrations
 {
     [DbContext(typeof(FPT_Pharmacy_AssignmentContext))]
-    partial class FPT_Pharmacy_AssignmentContextModelSnapshot : ModelSnapshot
+    [Migration("20240504042537_RemoveTransaction")]
+    partial class RemoveTransaction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,16 +60,12 @@ namespace FPT_Pharmacy_Assignment.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("UserId1")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("OrderId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Order");
                 });
@@ -425,7 +424,9 @@ namespace FPT_Pharmacy_Assignment.Migrations
                 {
                     b.HasOne("FPT_Pharmacy_Assignment.Areas.Admin.Models.User", null)
                         .WithMany("Orders")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("FPT_Pharmacy_Assignment.Areas.Admin.Models.OrderDetail", b =>

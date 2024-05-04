@@ -47,6 +47,7 @@ namespace FPT_Pharmacy_Assignment
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
@@ -73,6 +74,21 @@ namespace FPT_Pharmacy_Assignment
             });
 
             services.AddControllersWithViews();
+
+            //Redirect if not authenticated
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Identity/Account/Login";
+            });
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 5;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+            });
         }
     }
 }

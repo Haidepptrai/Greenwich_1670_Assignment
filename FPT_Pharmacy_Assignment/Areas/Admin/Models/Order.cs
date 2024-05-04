@@ -9,7 +9,7 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Models
         public int OrderId { get; set; }
 
         [ForeignKey("User")]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         [Required(ErrorMessage = "Status is required.")]
         [RegularExpression(@"^(Pending|Completed|Cancelled)$", ErrorMessage = "Status must be either Pending, Completed, or Cancelled.")]
@@ -24,6 +24,5 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Models
         public DateTime UpdatedAt { get; set; }
 
         public OrderDetail OrderDetail { get; set; }
-        public virtual Transaction Transaction { get; set; }
     }
 }
