@@ -5,41 +5,52 @@
     Layout = "_Layout";
 }
 
+<div style="grid ">
 
-<h1>Shopping Cart</h1>
+    <h1>Shopping Cart</h1>
 
-@if (Model.Count == 0)
-{
-    <p>Your cart is empty.</p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Product Name</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total Price</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+    @if (Model.Count == 0)
+    {
+        <p>Your cart is empty.</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@item.ProductName</td>
-                    <td>@item.Price.ToString("C")</td>
-                    <td>@item.Quantity</td>
-                    <td>@(item.Price * item.Quantity)</td>
-                    <td>
-                        <a class="btn btn-danger" href="@Url.Action("RemoveItem", "Cart", new { id = item.ProductId })">Remove Item</a>
-                    </td>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td>@item.Price.ToString("C")</td>
+                        <td>@item.Quantity</td>
+                        <td>@(item.Price * item.Quantity)</td>
+                        <td>
+                            <a class="btn btn-danger" href="@Url.Action("RemoveItem", "Cart", new { id = item.ProductId })">Remove Item</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 
-<a class="btn btn-primary" href="@Url.Action("Index", "Products")">Continue Shopping</a>
-<a class="btn btn-success" href="@Url.Action("Checkout", "Cart")">Proceed to Checkout</a>
+    <a class="btn btn-primary" href="@Url.Action("Index", "Products")">Continue Shopping</a>
+    <a class="btn btn-success" href="@Url.Action("Index", "Checkout")">Proceed to Checkout</a>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var message = '@TempData["toastrWarning"]';
+        if (message) {
+            toastr.warning(message);
+        }
+    });
+</script>

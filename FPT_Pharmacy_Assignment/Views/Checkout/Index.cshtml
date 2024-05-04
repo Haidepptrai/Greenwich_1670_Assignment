@@ -1,0 +1,68 @@
+﻿@model CheckoutViewModel
+
+<div class='bill-container'>
+    <div class='window'>
+        <div class='order-info'>
+            <div class='order-info-content'>
+                <h2>Order Summary</h2>
+                <div class='line'></div>
+                @foreach (var item in Model.CartItems)
+                {
+                    <table class='order-table'>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @*<img src='@item.ImageUrl' class='full-width'/>*@
+                                </td>
+                                <td>
+                                    @*<br> <span class='thin'>@item.Manu</span>*@@item.ProductName
+                                    <div class='price'>$@item.TotalPrice</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class='line'></div>
+                }
+                <div class='total'>
+                    <span style='float:left;'>
+                        <div class='thin dense'>Delivery</div>
+                        TOTAL
+                    </span>
+                    <span style='float:right; text-align:right;'>
+                        <div class='thin dense'>$10</div>
+                        @{
+                            decimal totalPrice = 0;
+                        }
+                        @foreach (var item in Model.CartItems)
+                        {
+                            totalPrice += item.TotalPrice;
+                        }
+                        <div class='price'>$@(totalPrice + 10)</div>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class='credit-info'>
+            <div class='credit-info-content'>
+                <table class='half-input-table'>
+                    <tr style="text-align: center;">
+                        <td>Please fill your information</td>
+                    </tr>
+                </table>
+                <form asp-controller="Checkout" asp-action="CompleteCheckout" method="post">
+                    Your name
+                    <input class='input-field' name="name" value="@Model.User.UserName"></input>
+                    Your address
+                    <input class='input-field' name="address" value="@Model.User.Address"></input>
+                    Phone number
+                    <input class='input-field' name="phone" value="@Model.User.PhoneNumber"></input>
+                    <button class='pay-btn'>Checkout</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,8 +1,6 @@
 ﻿using FPT_Pharmacy_Assignment.Areas.Identity.Data;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using FPT_Pharmacy_Assignment.Areas.Admin.Models;
 
 namespace FPT_Pharmacy_Assignment.Data;
 
@@ -24,10 +22,10 @@ public class FPT_Pharmacy_AssignmentContext : IdentityDbContext<CustomUser>
 
     public DbSet<FPT_Pharmacy_Assignment.Areas.Admin.Models.Order> Order { get; set; } = default!;
 
+    public DbSet<FPT_Pharmacy_Assignment.Areas.Admin.Models.OrderDetail> OrderDetail { get; set; } = default!;
+
     public DbSet<FPT_Pharmacy_Assignment.Areas.Admin.Models.Product> Product { get; set; } = default!;
 
-    public DbSet<FPT_Pharmacy_Assignment.Areas.Admin.Models.Transaction> Transaction { get; set; } = default!;
-
-public DbSet<Category> Category { get; set; } = default!;
+    public DbSet<Category> Category { get; set; } = default!;
 }
 

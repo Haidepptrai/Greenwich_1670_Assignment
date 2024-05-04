@@ -13,7 +13,9 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    display: -ms-flex:inherit;
+    -webkit-flex: inherit;
+    flex: inherit;
 }
 
 .no-arrows::-webkit-inner-spin-button,

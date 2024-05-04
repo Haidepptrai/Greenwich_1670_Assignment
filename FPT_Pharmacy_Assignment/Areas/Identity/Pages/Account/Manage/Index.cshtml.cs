@@ -2,14 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 using FPT_Pharmacy_Assignment.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
 
 namespace FPT_Pharmacy_Assignment.Areas.Identity.Pages.Account.Manage
 {
@@ -59,6 +56,9 @@ namespace FPT_Pharmacy_Assignment.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            public string Address { get; set; }
+
         }
 
         private async Task LoadAsync(CustomUser user)
@@ -70,7 +70,8 @@ namespace FPT_Pharmacy_Assignment.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                Address = user.Address
             };
         }
 
@@ -111,6 +112,11 @@ namespace FPT_Pharmacy_Assignment.Areas.Identity.Pages.Account.Manage
                 }
             }
 
+            if (Input.Address != user.Address)
+            {
+                user.Address = Input.Address;
+            }
+            await _userManager.UpdateAsync(user);
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();

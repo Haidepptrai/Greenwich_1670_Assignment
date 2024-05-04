@@ -20,16 +20,6 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Models
         [Range(0, int.MaxValue)]
         public int Quantity { get; set; }
 
-        [NotMapped]
-        public decimal PricePerUnit => Product?.Price ?? 0;
-
-        // Additional properties for Cart session handling
-        [NotMapped]
-        public string ProductName { get; set; }
-
-        [NotMapped]
-        public decimal Price { get; set; }
-
         public virtual Order Order { get; set; }
         public virtual Product Product { get; set; }
     }
