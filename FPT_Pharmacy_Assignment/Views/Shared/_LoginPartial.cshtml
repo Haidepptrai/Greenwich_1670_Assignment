@@ -3,26 +3,55 @@
 
 @inject SignInManager<CustomUser> SignInManager
 @inject UserManager<CustomUser> UserManager
+@{
+	var currentUser = await UserManager.GetUserAsync(User);
+}
+<ul class="navbar-nav" style=" flex-direction: row !important; justify-content: center; align-items: center;">
+	@if (SignInManager.IsSignedIn(User))
+	{
+		<!-- Dropdown Menu -->
+		<div class="dropdown">
+			<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-circle me-1" viewBox="0 0 16 16">
+					<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+					<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+				</svg>
+				<span class="fw-bold">@currentUser.FullName</span>
+			</button>
+			<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+				<li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Profile</a></li>
+				<li>
+					<form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+						<button id="logout" type="submit" class="dropdown-item" style="border: none; background: none;">Logout</button>
+					</form>
+				</li>
+			</ul>
+		</div>
+		<script>
+			document.addEventListener("DOMContentLoaded", function () {
+				var dropdownMenu = document.querySelector('.dropdown-menu');
 
-<ul class="navbar-nav" style=" flex-direction: row !important; justify-content: center; align-items: center; gap: 1.25rem;">
-@if (SignInManager.IsSignedIn(User))
-{
-    <li class="nav-item">
-        <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-    </li>
-    <li class="nav-item">
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
-        </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
-}
+				document.getElementById("dropdownMenuButton").addEventListener("click", function (event) {
+					dropdownMenu.classList.toggle("show");
+				});
+
+				window.addEventListener("click", function (event) {
+					if (!dropdownMenu.contains(event.target) && !event.target.matches('.dropdown-toggle')) {
+						dropdownMenu.classList.remove("show");
+					}
+				});
+			});
+		</script>
+
+	}
+	else
+	{
+		<li class="nav-item">
+			<a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+		</li>
+	}
 </ul>
+

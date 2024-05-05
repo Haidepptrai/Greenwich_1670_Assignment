@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FPT_Pharmacy_Assignment.Areas.Identity.Data.CustomUser>
+﻿@model List<UsersViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -8,22 +8,25 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FullName)
+                Full Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserName)
+                Roles
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+                Email
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Address)
+                User Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateOfBirth)
+                Address
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PhoneNumber)
+                Date Of Birth
+            </th>
+            <th>
+                PhoneNumber
             </th>
             <th></th>
         </tr>
@@ -36,10 +39,13 @@
                     @Html.DisplayFor(modelItem => user.FullName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => user.UserName)
+                    @Html.DisplayFor(modelItem => user.Role)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => user.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.Username)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => user.Address)
@@ -52,7 +58,7 @@
                 </td>
                 <td>
                     <a asp-action="Edit" asp-area="Admin" asp-route-id="@user.Id">Edit</a> |
-                    <a asp-action="Details" asp-area="Admin" asp-route-id="@user.Id">Details</a> | 
+                    <a asp-action="Details" asp-area="Admin" asp-route-id="@user.Id">Details</a> |
                     <a asp-action="Delete" asp-area="Admin" asp-route-id="@user.Id">Delete</a>
                 </td>
             </tr>
