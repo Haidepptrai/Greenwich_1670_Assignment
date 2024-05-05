@@ -25,12 +25,33 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
             _userManager = userManager;
             _roleManager = roleManager;
         }
-
+        [HttpGet]
+        public IActionResult ListRoles()
+        {
+            var roles = _roleManager.Roles;
+            return View(roles);
+        }
         // GET: Admin/Users
         public async Task<IActionResult> Index()
         {
             var users = await _userManager.Users.ToListAsync();
-            return View(users);
+
+            // Define a constant for the minimum date
+            DateTime minDate = new DateTime(1970, 1, 1);
+
+            var usersViewModel = users.Select(c => new UsersViewModel()
+            {
+                Username = c.UserName,
+                Email = c.Email,
+                PhoneNumber = c.PhoneNumber,
+                Address = c.Address,
+                Id = c.Id,
+                DateOfBirth = c.DateOfBirth ?? minDate, // Use the custom minimum date
+                FullName = c.FullName,
+                Role = string.Join(",", _userManager.GetRolesAsync(c).Result ?? Enumerable.Empty<string>())
+            }).ToList();
+
+            return View(usersViewModel);
         }
 
         // GET: Admin/Users/Details/5

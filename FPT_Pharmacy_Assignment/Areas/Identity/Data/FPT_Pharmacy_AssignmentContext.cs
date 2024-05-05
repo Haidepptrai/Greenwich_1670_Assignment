@@ -16,7 +16,7 @@ public class FPT_Pharmacy_AssignmentContext : IdentityDbContext<CustomUser>
         base.OnModelCreating(builder);
     }
 
-    public DbSet<FPT_Pharmacy_Assignment.Areas.Admin.Models.User> User { get; set; } = default!;
+    public DbSet<UsersViewModel> User { get; set; } = default!;
 
     public DbSet<Manufacturer> Manufacturer { get; set; } = default!;
 
