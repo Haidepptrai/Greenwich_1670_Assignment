@@ -1,36 +1,124 @@
-﻿@model FPT_Pharmacy_Assignment.Areas.Admin.Models.Order
+﻿@using FPT_Pharmacy_Assignment.Areas.Admin.Models
+@model FPT_Pharmacy_Assignment.Areas.Admin.Models.OrderDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
 }
+<style>
+    select option:disabled {
+        background-color: #D3d3d3;
+    }
+</style>
 
+<a asp-area="Admin" asp-action="Index" style="font-size: 25px;">&larr; Back to list</a>
 <h1>Details</h1>
 
 <div>
     <h4>Order</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.Email)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.Email)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.PhoneNumber)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.PhoneNumber)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdatedAt)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.Address)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UpdatedAt)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.Address)
+        </dd>
+        <dt class="col-sm-2">
+            Created At
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.CreatedAt)
+        </dd>
+        <dt class="col-sm-2">
+            Updated At
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.UpdatedAt)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Order.TotalPrice)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Order.TotalPrice)
         </dd>
     </dl>
 </div>
+@{
+    var statuses = new List<string> { "Pending", "Completed", "Cancelled" }
+        .Where(s => s != Model.Order.Status)
+        .Select(s => new SelectListItem { Value = s, Text = s })
+        .ToList();
+}
+<form id="statusForm">
+    <input type="hidden" name="id" value="@Model.Order.OrderId" />
+    <label for="statusSelect">Update Status:</label>
+    @Html.DropDownList("status", statuses, @Model.Order.Status, new { @class = "form-control", id = "statusSelect" })
+    <button type="submit" class="btn btn-primary mt-3">Update Status</button>
+</form>
+
+
+
 <div>
-    <a asp-area ="Admin" asp-action="Edit" asp-route-id="@Model?.OrderId">Edit</a> |
-    <a asp-area="Admin" asp-action="Index">Back to List</a>
+    @* <a asp-area="Admin" asp-action="Edit" asp-route-id="@Model?.Order.OrderId">Edit</a> | *@
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Order.OrderDetails)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Product.Price</td>
+                    <td>@item.Quantity</td>
+                    <td>@(item.Product.Price * item.Quantity)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
 </div>
+<script>
+    document.getElementById('statusForm').onsubmit = async function (e) {
+        e.preventDefault();
+        var form = e.currentTarget;
+        var id = form.querySelector('input[name="id"]').value;
+        var status = form.querySelector('select[name="status"]').value;
+
+        // Ensure the URL correctly targets the OrdersController's UpdateStatus action
+        const url = '@Url.Action("UpdateStatus", "Orders")/' + id;
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(status)
+        });
+
+        if (response.ok) {
+            alert("Status updated successfully!");
+            location.reload(); // Reload page to reflect the changes
+        } else {
+            alert('Failed to update status. ' + response.statusText);
+        }
+    };
+</script>
+
