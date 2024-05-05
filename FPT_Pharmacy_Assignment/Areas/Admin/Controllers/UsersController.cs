@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FPT_Pharmacy_Assignment.Areas.Admin.Models;
 using FPT_Pharmacy_Assignment.Data;
+using Microsoft.AspNetCore.Identity;
+using FPT_Pharmacy_Assignment.Areas.Identity.Data;
 
 namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
 {
@@ -14,28 +16,33 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
     public class UsersController : Controller
     {
         private readonly FPT_Pharmacy_AssignmentContext _context;
+		private UserManager<CustomUser> _userManager;
+        private RoleManager<IdentityRole> _roleManager;
 
-        public UsersController(FPT_Pharmacy_AssignmentContext context)
+		public UsersController(FPT_Pharmacy_AssignmentContext context, UserManager<CustomUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         // GET: Admin/Users
         public async Task<IActionResult> Index()
         {
-            return View(await _context.User.ToListAsync());
+            var users = await _userManager.Users.ToListAsync();
+            return View(users);
         }
 
         // GET: Admin/Users/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.User
-                .FirstOrDefaultAsync(m => m.UserId == id);
+            var user = await _userManager.Users
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (user == null)
             {
                 return NotFound();
@@ -43,38 +50,16 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
 
             return View(user);
         }
-
-        // GET: Admin/Users/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Admin/Users/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,Username,Password,Email,Role,Address,Phone,DateOfBirth")] User user)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(user);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(user);
-        }
-
         // GET: Admin/Users/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        [HttpGet]
+        public async Task<IActionResult> Edit(string? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.User.FindAsync(id);
+            var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
                 return NotFound();
@@ -87,9 +72,9 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserId,Username,Password,Email,Role,Address,Phone,DateOfBirth")] User user)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,UserName,Email,PhoneNumber")] CustomUser user)
         {
-            if (id != user.UserId)
+            if (id != user.Id)
             {
                 return NotFound();
             }
@@ -98,12 +83,22 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
+                    var currentUser = await _userManager.FindByIdAsync(id);
+                    if (currentUser == null)
+                    {
+                        return NotFound();
+                    }
+
+                    currentUser.UserName = user.UserName;
+                    currentUser.Email = user.Email;
+                    currentUser.PhoneNumber = user.PhoneNumber;
+
+                    // Update user using UserManager
+                    await _userManager.UpdateAsync(currentUser);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.UserId))
+                    if (!UserExists(id))
                     {
                         return NotFound();
                     }
@@ -116,17 +111,15 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
             }
             return View(user);
         }
-
         // GET: Admin/Users/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.User
-                .FirstOrDefaultAsync(m => m.UserId == id);
+            var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
                 return NotFound();
@@ -138,21 +131,23 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
         // POST: Admin/Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var user = await _context.User.FindAsync(id);
-            if (user != null)
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
             {
-                _context.User.Remove(user);
+                return NotFound();
             }
 
-            await _context.SaveChangesAsync();
+            // Delete user using UserManager
+            await _userManager.DeleteAsync(user);
+
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserExists(int id)
+        private bool UserExists(string id)
         {
-            return _context.User.Any(e => e.UserId == id);
+            throw new NotImplementedException();
         }
     }
 }

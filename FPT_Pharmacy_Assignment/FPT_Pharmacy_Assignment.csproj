@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="ModelsView\" />
     <Folder Include="wwwroot\images\" />
 	  <Folder Include="wwwroot\bootstrap\" />
 	  <Folder Include="wwwroot\bootstrap\dist\js\" />
