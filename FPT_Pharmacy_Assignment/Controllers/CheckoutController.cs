@@ -68,13 +68,39 @@ namespace FPT_Pharmacy_Assignment.Controllers
                 return View("Index");
             }
 
+            CustomUser user = await _userManager.GetUserAsync(User);
+
+            // Update address and phone number if provided
+            if (!string.IsNullOrWhiteSpace(userInfo.Address))
+            {
+                user.Address = userInfo.Address;
+            }
+
+            if (!string.IsNullOrWhiteSpace(userInfo.PhoneNumber))
+            {
+                user.PhoneNumber = userInfo.PhoneNumber;
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                // Handle errors from updating the user
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return View("Index", userInfo);
+            }
+
+
             // Calculate total price including delivery
             decimal totalPrice = cart.Sum(item => item.Price * item.Quantity) + 10; // Assuming delivery charge is $10
 
             // Create and save the order record
             var order = new Order
             {
-                UserId = userInfo.Id,
+                UserId = _userManager.GetUserId(User),
                 CreatedAt = DateTime.Now,
                 Status = "Pending",
                 TotalPrice = totalPrice,

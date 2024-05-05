@@ -4,6 +4,7 @@ using FPT_Pharmacy_Assignment.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FPT_Pharmacy_Assignment.Migrations
 {
     [DbContext(typeof(FPT_Pharmacy_AssignmentContext))]
-    partial class FPT_Pharmacy_AssignmentContextModelSnapshot : ModelSnapshot
+    [Migration("20240505124310_RemoveOldUserTable")]
+    partial class RemoveOldUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,7 +94,8 @@ namespace FPT_Pharmacy_Assignment.Migrations
 
                     b.HasKey("OrderDetailId");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("OrderId")
+                        .IsUnique();
 
                     b.HasIndex("ProductId");
 
@@ -378,8 +382,8 @@ namespace FPT_Pharmacy_Assignment.Migrations
             modelBuilder.Entity("FPT_Pharmacy_Assignment.Areas.Admin.Models.OrderDetail", b =>
                 {
                     b.HasOne("FPT_Pharmacy_Assignment.Areas.Admin.Models.Order", "Order")
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("OrderId")
+                        .WithOne("OrderDetail")
+                        .HasForeignKey("FPT_Pharmacy_Assignment.Areas.Admin.Models.OrderDetail", "OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -471,7 +475,8 @@ namespace FPT_Pharmacy_Assignment.Migrations
 
             modelBuilder.Entity("FPT_Pharmacy_Assignment.Areas.Admin.Models.Order", b =>
                 {
-                    b.Navigation("OrderDetails");
+                    b.Navigation("OrderDetail")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Manufacturer", b =>

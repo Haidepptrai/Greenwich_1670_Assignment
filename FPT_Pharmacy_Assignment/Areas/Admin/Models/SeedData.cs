@@ -1,8 +1,5 @@
 ﻿using FPT_Pharmacy_Assignment.Data;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FPT_Pharmacy_Assignment.Areas.Admin.Models
 {
@@ -30,17 +27,17 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Models
                 context.Manufacturer.AddRange(
                     new Manufacturer
                     {
-                        Name = "Manufacturer 1",
+                        Name = "Pharmaceutical Innovations Consortium",
                         Phone = "1234567890"
                     },
                     new Manufacturer
                     {
-                        Name = "Manufacturer 2",
+                        Name = "Therapeutic Solutions Enterprises",
                         Phone = "9876543210"
                     },
                     new Manufacturer
                     {
-                        Name = "Manufacturer 3",
+                        Name = "BioGenix Pharmaceuticals",
                         Phone = "5555555555"
                     }
                 );
@@ -51,9 +48,9 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Models
             if (!context.Category.Any())
             {
                 context.Category.AddRange(
-                    new Category { Name = "Category 1" },
-                    new Category { Name = "Category 2" },
-                    new Category { Name = "Category 3" }
+                    new Category { Name = "Neurological Health Solutions" },
+                    new Category { Name = "Cardiovascular Care Products" },
+                    new Category { Name = "Dermatological Treatments" }
                 );
                 await context.SaveChangesAsync();
             }

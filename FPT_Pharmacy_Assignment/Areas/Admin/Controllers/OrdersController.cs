@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using FPT_Pharmacy_Assignment.Areas.Admin.Models;
+﻿using FPT_Pharmacy_Assignment.Areas.Admin.Models;
+using FPT_Pharmacy_Assignment.Areas.Identity.Data;
 using FPT_Pharmacy_Assignment.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
 {
@@ -14,10 +11,12 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
     public class OrdersController : Controller
     {
         private readonly FPT_Pharmacy_AssignmentContext _context;
+        private readonly UserManager<CustomUser> _userManager;
 
-        public OrdersController(FPT_Pharmacy_AssignmentContext context)
+        public OrdersController(FPT_Pharmacy_AssignmentContext context, UserManager<CustomUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Admin/Orders
@@ -35,14 +34,66 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
             }
 
             var order = await _context.Order
+                .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Product)
                 .FirstOrDefaultAsync(m => m.OrderId == id);
+
             if (order == null)
             {
                 return NotFound();
             }
 
-            return View(order);
+            // Retrieve the user details from UserManager
+            var user = await _userManager.FindByIdAsync(order.UserId);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            // Pass both order and user details to the view
+            var viewModel = new OrderDetailsViewModel
+            {
+                Order = order,
+                User = user
+            };
+
+            return View(viewModel);
         }
+
+
+
+        // POST: Admin/Orders/UpdateStatus/5
+        [HttpPost]
+        public async Task<IActionResult> UpdateStatus(int id, [FromBody] string status)
+        {
+            var order = await _context.Order.FindAsync(id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            order.Status = status;
+            _context.Entry(order).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!OrderExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
 
         // GET: Admin/Orders/Create
         public IActionResult Create()
@@ -61,57 +112,6 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
             {
                 _context.Add(order);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(order);
-        }
-
-        // GET: Admin/Orders/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var order = await _context.Order.FindAsync(id);
-            if (order == null)
-            {
-                return NotFound();
-            }
-            return View(order);
-        }
-
-        // POST: Admin/Orders/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("OrderId,UserId,Status,CreatedAt,UpdatedAt")] Order order)
-        {
-            if (id != order.OrderId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(order);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!OrderExists(order.OrderId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
                 return RedirectToAction(nameof(Index));
             }
             return View(order);

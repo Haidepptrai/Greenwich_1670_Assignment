@@ -19247,7 +19247,8 @@ textarea.form-control-lg {
 }
 
 .collapse.in {
-    display: block
+    display: block;
+    background: #D3D3D3;
 }
 
 .app-header {
