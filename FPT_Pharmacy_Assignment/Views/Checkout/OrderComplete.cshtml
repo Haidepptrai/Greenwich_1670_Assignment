@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Order Complete";
+}
+
+<div class="order-complete-container">
+    <div class="order-complete">
+        @if (ViewBag.OrderId != null)
+        {
+            <h1>Thank You for Your Order!</h1>
+        }
+        else
+        {
+            <h1>Order Failed</h1>
+        }
+        <p>@ViewBag.Message</p>
+        @if (ViewBag.OrderId != null)
+        {
+            <p>Your Order ID: @ViewBag.OrderId</p>
+        }
+        <div>
+            <a href="@Url.Action("Index", "Home")" class="button">Return to Home</a>
+        </div>
+    </div>
+</div>

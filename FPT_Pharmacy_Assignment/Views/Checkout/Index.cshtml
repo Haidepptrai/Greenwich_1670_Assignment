@@ -53,13 +53,16 @@
                         <td>Please fill your information</td>
                     </tr>
                 </table>
-                <form asp-controller="Checkout" asp-action="CompleteCheckout" method="post">
+                <form asp-controller="Checkout" asp-action="OrderComplete" method="post">
                     Your name
-                    <input class='input-field' name="name" value="@Model.User.UserName"></input>
+                    <input class="input-field" asp-for="User.UserName" />
+                    <span asp-validation-for="User.UserName" class="text-danger"></span>
                     Your address
-                    <input class='input-field' name="address" value="@Model.User.Address"></input>
+                    <input class="input-field" asp-for="User.Address" />
+                    <span asp-validation-for="User.Address" class="text-danger"></span>
                     Phone number
-                    <input class='input-field' name="phone" value="@Model.User.PhoneNumber"></input>
+                    <input class="input-field" asp-for="User.PhoneNumber" />
+                    <span asp-validation-for="User.PhoneNumber" class="text-danger"></span>
                     <button class='pay-btn'>Checkout</button>
                 </form>
             </div>

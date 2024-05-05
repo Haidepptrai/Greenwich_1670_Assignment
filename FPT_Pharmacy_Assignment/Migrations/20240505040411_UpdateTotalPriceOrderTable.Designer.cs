@@ -4,6 +4,7 @@ using FPT_Pharmacy_Assignment.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FPT_Pharmacy_Assignment.Migrations
 {
     [DbContext(typeof(FPT_Pharmacy_AssignmentContext))]
-    partial class FPT_Pharmacy_AssignmentContextModelSnapshot : ModelSnapshot
+    [Migration("20240505040411_UpdateTotalPriceOrderTable")]
+    partial class UpdateTotalPriceOrderTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
