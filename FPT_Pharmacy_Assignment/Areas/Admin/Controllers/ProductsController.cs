@@ -21,8 +21,8 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
         // GET: Admin/Products
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Product.Include(p => p.Category);
-            return View(await _context.Product.ToListAsync());
+            var products = _context.Product.Include(p => p.Category);
+            return View(products);
         }
 
         // GET: Admin/Products/Details/5
@@ -34,7 +34,7 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
             }
 
             var product = await _context.Product
-                 .Include(p => p.Category)
+                .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.ProductId == id);
             if (product == null)
             {

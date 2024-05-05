@@ -6,12 +6,18 @@ namespace FPT_Pharmacy_Assignment.Models
     {
         public IEnumerable<Product> Products { get; set; }
         public IEnumerable<Category> Categories { get; set; }
-        public ProductViewModel(IEnumerable<Product> products, IEnumerable<Category> categories)
+        public string searchByName { get; set; }
+
+		public ProductViewModel(IEnumerable<Product> products, IEnumerable<Category> categories)
         {
             Products = products;
             Categories = categories;
         }
-
+        public ProductViewModel()
+        {
+            Products = new List<Product>();
+            Categories = new List<Category>();
+        }
         public ProductViewModel(IEnumerable<Product> products)
         {
             Products = products;

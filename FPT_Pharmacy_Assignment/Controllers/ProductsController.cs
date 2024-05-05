@@ -1,4 +1,5 @@
-﻿using FPT_Pharmacy_Assignment.Data;
+﻿using FPT_Pharmacy_Assignment.Areas.Admin.Models;
+using FPT_Pharmacy_Assignment.Data;
 using FPT_Pharmacy_Assignment.Extensions;
 using FPT_Pharmacy_Assignment.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -15,37 +16,33 @@ namespace FPT_Pharmacy_Assignment.Controllers
         {
             _context = context;
         }
+        public IActionResult ProductByCategory(int categoryId)
+{
+    var productsByCategory = _context.Product.Where(p => p.CategoryId == categoryId).ToList();
 
-        // GET: Products
-        [HttpGet]
-        public async Task<IActionResult> Index()
-        {
-            var products = _context.Product;
-            return View(new ProductViewModel(products));
-        }
+    var model = new ProductViewModel
+    {
+        Products = productsByCategory,
+        Categories = _context.Category.ToList()
+    };
 
-        // POST: Admin/Products/FilterProducts
-        [HttpPost]
-        public IActionResult FilterProducts(List<string> prices)
-        {
-            var filteredProducts = _context.Product.AsQueryable();
+    return View("Index", model);
+}
 
-            if (prices != null && prices.Any())
-            {
-                filteredProducts = filteredProducts.Where(p =>
-                    (prices.Contains("price1") && p.Price >= 0 && p.Price <= 50) ||
-                    (prices.Contains("price2") && p.Price > 50 && p.Price <= 200) ||
-                    (prices.Contains("price3") && p.Price >= 200 && p.Price <= 500) ||
-                    (prices.Contains("price4") && p.Price > 500 && p.Price <= 1000) ||
-                    (prices.Contains("price5") && p.Price >= 1000 && p.Price <= 2000) ||
-                    (prices.Contains("price6") && p.Price > 2000 && p.Price <= 5000)
-                );
-            }
+public IActionResult SearchByName(ProductViewModel model)
+{
+    var filteredProducts = _context.Product
+        .Where(p => string.IsNullOrEmpty(model.searchByName) || p.Name.Contains(model.searchByName))
+        .ToList();
 
-            var filteredProductList = filteredProducts.ToList();
+    var viewModel = new ProductViewModel
+    {
+        Products = filteredProducts,
+        Categories = _context.Category.ToList()
+    };
 
-            return View("Products", filteredProductList);
-        }
+    return View("Index", viewModel);
+}
 
         [HttpGet("Products")]
         public IActionResult Index(int page = 1, int pageSize = 9)
@@ -55,7 +52,7 @@ namespace FPT_Pharmacy_Assignment.Controllers
 
             // Calculate the total number of pages
             var totalPages = (int)Math.Ceiling((double)totalProducts / pageSize);
-
+            var categories = _context.Category;
             // Retrieve products for the current page
             var products = _context.Product
                 .OrderBy(p => p.ProductId)
@@ -67,8 +64,9 @@ namespace FPT_Pharmacy_Assignment.Controllers
             ViewBag.TotalPages = totalPages;
             ViewBag.CurrentPage = page;
             ViewBag.PageSize = pageSize;
+            var viewModel = new ProductViewModel(products, categories);
 
-            return View(products);
+            return View(viewModel);
         }
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)

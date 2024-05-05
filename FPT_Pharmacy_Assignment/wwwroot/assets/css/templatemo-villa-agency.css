@@ -130,7 +130,7 @@ body {
 }
 
 .section {
-    margin-top: 120px;
+    margin-top: 2%;
 }
 
 .section-heading {
@@ -1253,7 +1253,7 @@ Contact Style
 */
 
 .contact {
-    background-image: url(../images/contact-bg.jpg);
+    background-color: #0071f8;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
