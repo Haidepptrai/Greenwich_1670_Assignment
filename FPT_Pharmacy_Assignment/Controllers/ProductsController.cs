@@ -17,32 +17,32 @@ namespace FPT_Pharmacy_Assignment.Controllers
             _context = context;
         }
         public IActionResult ProductByCategory(int categoryId)
-        {
-            var productsByCategory = _context.Product.Where(p => p.CategoryId == categoryId).ToList();
+{
+    var productsByCategory = _context.Product.Where(p => p.CategoryId == categoryId).ToList();
 
-            var model = new ProductViewModel
-            {
-                Products = productsByCategory,
-                Categories = _context.Category.ToList()
-            };
+    var model = new ProductViewModel
+    {
+        Products = productsByCategory,
+        Categories = _context.Category.ToList()
+    };
 
-            return View("Index", model);
-        }
+    return View("Index", model);
+}
 
-        public IActionResult SearchByName(ProductViewModel model)
-        {
-            var filteredProducts = _context.Product
-                .Where(p => string.IsNullOrEmpty(model.searchByName) || p.Name.Contains(model.searchByName))
-                .ToList();
+public IActionResult SearchByName(ProductViewModel model)
+{
+    var filteredProducts = _context.Product
+        .Where(p => string.IsNullOrEmpty(model.searchByName) || p.Name.Contains(model.searchByName))
+        .ToList();
 
-            var viewModel = new ProductViewModel
-            {
-                Products = filteredProducts,
-                Categories = _context.Category.ToList()
-            };
+    var viewModel = new ProductViewModel
+    {
+        Products = filteredProducts,
+        Categories = _context.Category.ToList()
+    };
 
-            return View("Index", viewModel);
-        }
+    return View("Index", viewModel);
+}
 
         [HttpGet("Products")]
         public IActionResult Index(int page = 1, int pageSize = 9)
