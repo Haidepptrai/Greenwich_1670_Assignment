@@ -23,6 +23,10 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Models
         [DataType(DataType.Date)]
         public DateTime UpdatedAt { get; set; }
 
+        [Required(ErrorMessage = "Total is required.")]
+        [Range(0, double.MaxValue, ErrorMessage = "Total must be greater than or equal to 0.")]
+        public decimal TotalPrice { get; set; }
+
         public OrderDetail OrderDetail { get; set; }
     }
 }

@@ -43,67 +43,65 @@ namespace FPT_Pharmacy_Assignment.Controllers
             return View(viewModel);
         }
 
+
+        [HttpGet]
+        public IActionResult OrderComplete()
+        {
+            ViewBag.Message = TempData["Message"];
+            ViewBag.OrderId = TempData["OrderId"];  // This will be null if no orderId was set
+            return View();
+        }
+
         [HttpPost]
-        public async Task<IActionResult> CompleteCheckout(CheckoutViewModel model)
+        public async Task<IActionResult> OrderCompleteAsync(CustomUser userInfo)
         {
-            if (ModelState.IsValid)
+            var cart = HttpContext.Session.Get<List<CartItem>>("Cart");
+            if (cart == null || !cart.Any())
             {
-                // Update user information
-                var user = await _userManager.GetUserAsync(User);
-                if (user != null)
-                {
-                    user.UserName = model.User.UserName;
-                    user.Address = model.User.Address;
-                    user.PhoneNumber = model.User.PhoneNumber;
+                TempData["Message"] = "Your cart is empty.";
+                return RedirectToAction("OrderComplete");
+            }
 
-                    var result = await _userManager.UpdateAsync(user);
-                    if (!result.Succeeded)
-                    {
-                        // Handle the case where user update fails
-                        AddErrors(result);
-                        return View(model);
-                    }
-                }
+            if (!ModelState.IsValid)
+            {
+                // Automatically picks up model errors from data annotations
+                return View("Index");
+            }
 
-                // Create new order
-                var order = new Order
+            // Calculate total price including delivery
+            decimal totalPrice = cart.Sum(item => item.Price * item.Quantity) + 10; // Assuming delivery charge is $10
+
+            // Create and save the order record
+            var order = new Order
+            {
+                UserId = userInfo.Id,
+                CreatedAt = DateTime.Now,
+                Status = "Pending",
+                TotalPrice = totalPrice,
+            };
+            _context.Order.Add(order);
+            _context.SaveChanges();
+
+            // Save each cart item linked to the order
+            foreach (var item in cart)
+            {
+                var orderItem = new OrderDetail
                 {
-                    UserId = user.Id,
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow,
-                    Status = "Pending" // Default status
+                    OrderId = order.OrderId,
+                    ProductId = item.ProductId,
+                    Quantity = item.Quantity
                 };
-                _context.Order.Add(order);
-                await _context.SaveChangesAsync();
-
-                // Create order details
-                foreach (var item in model.CartItems)
-                {
-                    var orderDetail = new OrderDetail
-                    {
-                        OrderId = order.OrderId,
-                        ProductId = item.ProductId,
-                        Quantity = item.Quantity
-                    };
-                    _context.OrderDetail.Add(orderDetail);
-                }
-                await _context.SaveChangesAsync();
-
-                // Redirect to a confirmation page or similar
-                return RedirectToAction("OrderConfirmation", new { orderId = order.OrderId });
+                _context.OrderDetail.Add(orderItem);
             }
+            _context.SaveChanges();
 
-            // If the model state is not valid, return to the form with the current model
-            return View("Index", model);
+            // Clear the cart after saving the order
+            HttpContext.Session.Remove("Cart");
+
+            // Set TempData and redirect
+            TempData["Message"] = "Your order has been placed and is being processed. You will receive an email shortly!";
+            TempData["OrderId"] = order.OrderId;
+            return RedirectToAction("OrderComplete");
         }
-
-        private void AddErrors(IdentityResult result)
-        {
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-        }
-
     }
 }

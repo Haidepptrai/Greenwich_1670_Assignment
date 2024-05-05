@@ -20,9 +20,9 @@ namespace FPT_Pharmacy_Assignment.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-			var products = _context.Product;
-			return View(new ProductViewModel(products));
-		}
+            var products = _context.Product;
+            return View(new ProductViewModel(products));
+        }
 
         // POST: Admin/Products/FilterProducts
         [HttpPost]
