@@ -55,13 +55,13 @@
                 </table>
                 <form asp-controller="Checkout" asp-action="OrderComplete" method="post">
                     Your name
-                    <input class="input-field" asp-for="User.UserName" />
+                    <input class="input-field" asp-for="User.UserName" readonly />
                     <span asp-validation-for="User.UserName" class="text-danger"></span>
                     Your address
-                    <input class="input-field" asp-for="User.Address" />
+                    <input class="input-field" name="Address" asp-for="User.Address" required />
                     <span asp-validation-for="User.Address" class="text-danger"></span>
                     Phone number
-                    <input class="input-field" asp-for="User.PhoneNumber" />
+                    <input class="input-field" name="PhoneNumber" asp-for="User.PhoneNumber" required />
                     <span asp-validation-for="User.PhoneNumber" class="text-danger"></span>
                     <button class='pay-btn'>Checkout</button>
                 </form>

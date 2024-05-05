@@ -8,15 +8,17 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Models
         [Key]
         public int ProductId { get; set; }
 
-        [ForeignKey("Manufacturer")]
-        public int ManufacturerId { get; set; }
-        [ForeignKey("Category")]
-        public int CategoryId { get; set; }
-        [Display(Name = "Image")]
-        public string ImageFile { get; set; }
-
         [Required(ErrorMessage = "Product name is required.")]
         public string Name { get; set; }
+
+        [ForeignKey("Manufacturer")]
+        public int ManufacturerId { get; set; }
+
+        [ForeignKey("Category")]
+        public int CategoryId { get; set; }
+
+        [Display(Name = "Image")]
+        public string ImageFile { get; set; }
 
         public Manufacturer Manufacturer { get; set; }  // Navigation property
 

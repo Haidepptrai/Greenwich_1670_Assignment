@@ -27,6 +27,6 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Models
         [Range(0, double.MaxValue, ErrorMessage = "Total must be greater than or equal to 0.")]
         public decimal TotalPrice { get; set; }
 
-        public OrderDetail OrderDetail { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
     }
 }
