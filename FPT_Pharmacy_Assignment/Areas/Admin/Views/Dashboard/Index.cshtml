@@ -1,48 +1,92 @@
-﻿@model List<FPT_Pharmacy_Assignment.Areas.Admin.Models.Order>
+﻿@model DashboardViewModel
+
 @{
 	ViewData["Title"] = "Admin Panel";
 }
-
 <div class="container-fluid">
 	<!--  Row 1 -->
-	<!-- Add Analysis Report for Products -->
-	<div class="row mt-5">
-		<div class="col-lg-6">
-			<div class="card">
+	<div class="row">
+		<div class="col-lg-3 col-6">
+			<div class="card text-white bg-primary">
 				<div class="card-body">
-					<h5 class="card-title">Analysis Report for Products</h5>
-					<table class="table">
-						<thead>
-							<tr>
-								<th>Product Name</th>
-								<th>Total Sales Quantity</th>
-								<th>Total Income Generated</th>
-							</tr>
-						</thead>
-						<tbody>
-							@foreach (var product in Model)
-							{
-								
-							}
-						</tbody>
-					</table>
+					<h5 class="card-title">Total Income</h5>
+					<p class="card-text">@Model.TotalSales.ToString("C")</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-3 col-6">
+			<div class="card text-white bg-success">
+				<div class="card-body">
+					<h5 class="card-title">Total Product</h5>
+					<p class="card-text">@Model.TotalProductQuantity</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-3 col-6">
+			<div class="card text-white bg-info">
+				<div class="card-body">
+					<h5 class="card-title">Total Selling Products</h5>
+					<p class="card-text">@Model.TopSellingProducts.First().QuantitySold</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3 col-6">
+			<div class="card text-white bg-warning">
+				<div class="card-body">
+					<h5 class="card-title">Popular Categories</h5>
+					@foreach (var category in Model.PopularCategories)
+					{
+						<div>
+							<span>@category.CategoryName</span>
+						</div>
+					}
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<!-- Chart Income -->
-	<div class="row mt-5">
-		<div class="col-lg-12">
-			<div class="card">
-				<div class="card-body">
-					<h5 class="card-title">Chart Income</h5>
-					<!-- Add chart to visualize income over time -->
-					<!-- Example: Line chart showing income trend over months or years -->
-				</div>
-			</div>
+	<!-- Bar Chart -->
+	<div class="row mt-5 mb-5 justify-content-center">
+		<div class="col-md-8">
+			<canvas id="salesChart"></canvas>
 		</div>
 	</div>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script>
+		// Sales Chart Data
+		var salesData = @Html.Raw(Json.Serialize(Model.SalesData));
+
+		// Extracting data for Chart.js
+		const months = salesData.map(d => d.month);
+		var sales = salesData.map(d => d.totalSales);
+
+		// Creating the chart
+		var ctx = document.getElementById('salesChart').getContext('2d');
+		var myChart = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: months,
+				datasets: [{
+					label: 'Total Sales',
+					data: sales,
+					backgroundColor: 'rgba(75, 192, 192, 0.2)',
+					borderColor: 'rgba(75, 192, 192, 1)',
+					borderWidth: 1
+				}]
+			},
+			options: {
+				scales: {
+					yAxes: [{
+						ticks: {
+							beginAtZero: true
+						}
+					}]
+				}
+			}
+		});
+	</script>
 
 	<div class="row">
 		<!-- Recent Transactions -->
@@ -53,7 +97,7 @@
 						<h5 class="card-title fw-semibold">Recent Transactions</h5>
 					</div>
 					<ul class="timeline-widget mb-0 position-relative mb-n5">
-						@foreach (var order in Model)
+						@foreach (var order in Model.Orders)
 						{
 							<li class="timeline-item d-flex position-relative overflow-hidden">
 								<!-- Display transaction details -->
@@ -97,7 +141,7 @@
 							</thead>
 							<tbody>
 								<!-- Display your recent transactions data in a table format -->
-								@foreach (var order in Model)
+								@foreach (var order in Model.Orders)
 								{
 									<tr>
 										<td>@order.OrderId</td>

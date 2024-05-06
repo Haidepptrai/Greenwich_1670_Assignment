@@ -52,7 +52,7 @@
                                     }
                                     @Html.DisplayFor(modelItem => description)
                                 </td>
-                                <td class="align-middle">@Html.DisplayFor(modelItem => item.Price)</td>
+                                <td class="align-middle">@Html.DisplayFor(modelItem => item.Price.ToString("C"))</td>
                                 <td class="align-middle">@Html.DisplayFor(modelItem => item.StockLevel)</td>
                                 <td class="align-middle">
                                     <div class="btn-group" role="group" aria-label="Product Actions">

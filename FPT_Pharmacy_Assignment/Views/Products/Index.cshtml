@@ -38,7 +38,7 @@
 								 class="card-img-top" alt="@Html.DisplayFor(modelItem => product.Name)">
 						</a>
 						<span class="category">@Html.DisplayFor(modelItem => product.Category.Name)</span>
-						<h6>@product.Price</h6>
+						<h6>@product.Price.ToString("C")</h6>
 						<h4>@Html.DisplayFor(modelItem => product.Name)</h4>
 						<ul>
 							<li>Quantity: <span>@Html.DisplayFor(modelItem => product.StockLevel)</span></li>
