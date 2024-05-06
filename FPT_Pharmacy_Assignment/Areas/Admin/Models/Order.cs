@@ -19,7 +19,6 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Models
         [DataType(DataType.Date)]
         public DateTime CreatedAt { get; set; }
 
-        [Required(ErrorMessage = "Updated at date is required.")]
         [DataType(DataType.Date)]
         public DateTime UpdatedAt { get; set; }
 

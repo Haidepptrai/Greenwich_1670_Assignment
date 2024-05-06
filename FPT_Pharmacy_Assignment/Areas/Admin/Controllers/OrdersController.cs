@@ -110,6 +110,12 @@ namespace FPT_Pharmacy_Assignment.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                DateTime currentDate = DateTime.Now;
+                if (order.UpdatedAt == null)
+                {
+                    order.UpdatedAt = currentDate;
+                }
+
                 _context.Add(order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

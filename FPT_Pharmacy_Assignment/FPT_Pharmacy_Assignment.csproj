@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="Data\**" />
+    <Compile Remove="ModelsView\**" />
     <Content Remove="Data\**" />
+    <Content Remove="ModelsView\**" />
     <EmbeddedResource Remove="Data\**" />
+    <EmbeddedResource Remove="ModelsView\**" />
     <None Remove="Data\**" />
+    <None Remove="ModelsView\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,7 +31,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="ModelsView\" />
     <Folder Include="wwwroot\images\" />
 	  <Folder Include="wwwroot\bootstrap\" />
 	  <Folder Include="wwwroot\bootstrap\dist\js\" />
